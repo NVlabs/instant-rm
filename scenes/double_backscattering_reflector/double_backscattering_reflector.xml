@@ -1,0 +1,26 @@
+<scene version="2.1.0">
+
+<!-- Materials -->
+
+    <bsdf type="backscattering" id="mat-itu_metal">
+        <float name="eta_r" value="1.0"/>
+        <float name="eta_i" value="51357436"/>
+		<float name="s" value="1.0"/>
+		<integer name="alpha_r" value="10"/>
+		<integer name="alpha_i" value="5"/>
+		<float name="lambda" value="0.5"/>
+    </bsdf>
+
+<!-- Shapes -->
+
+	<shape type="ply" id="mesh-large_reflector">
+		<string name="filename" value="meshes/large_reflector.ply"/>
+		<boolean name="face_normals" value="true"/>
+		<ref id="mat-itu_metal" name="bsdf"/>
+	</shape>
+	<shape type="ply" id="mesh-small_reflector">
+		<string name="filename" value="meshes/small_reflector.ply"/>
+		<boolean name="face_normals" value="true"/>
+		<ref id="mat-itu_metal" name="bsdf"/>
+	</shape>
+</scene>

@@ -1,0 +1,45 @@
+<scene version="2.1.0">
+
+<!-- Defaults, these can be set via the command line: -Darg=value -->
+
+<!-- Materials -->
+    
+    <bsdf type="conductor" id="mat-itu_metal">
+        <spectrum name="eta" value="5067.4175"/>
+        <spectrum name="k" value="5067.417"/>
+    </bsdf>
+
+<!-- Shapes -->
+	<shape type="merge">
+        <shape type="ply" id="mesh-floor">
+            <string name="filename" value="meshes/floor.ply"/>
+            <boolean name="face_normals" value="true"/>
+            <ref id="mat-itu_metal" name="bsdf"/>
+        </shape>
+        <shape type="ply" id="mesh-ceiling">
+            <string name="filename" value="meshes/ceiling.ply"/>
+            <boolean name="face_normals" value="true"/>
+            <ref id="mat-itu_metal" name="bsdf"/>
+        </shape>
+        <shape type="ply" id="mesh-wall_xp">
+            <string name="filename" value="meshes/wall_xp.ply"/>
+            <boolean name="face_normals" value="true"/>
+            <ref id="mat-itu_metal" name="bsdf"/>
+        </shape>
+        <shape type="ply" id="mesh-wall_ym">
+            <string name="filename" value="meshes/wall_ym.ply"/>
+            <boolean name="face_normals" value="true"/>
+            <ref id="mat-itu_metal" name="bsdf"/>
+        </shape>
+        <shape type="ply" id="mesh-wall_yp">
+            <string name="filename" value="meshes/wall_yp.ply"/>
+            <boolean name="face_normals" value="true"/>
+            <ref id="mat-itu_metal" name="bsdf"/>
+        </shape>
+        <shape type="ply" id="mesh-wall_xm">
+            <string name="filename" value="meshes/wall_xm.ply"/>
+            <boolean name="face_normals" value="true"/>
+            <ref id="mat-itu_metal" name="bsdf"/>
+        </shape>
+    </shape>
+</scene>

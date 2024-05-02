@@ -1,0 +1,42 @@
+<scene version="2.1.0">
+
+<!-- Materials -->
+
+    <bsdf type="backscattering" id="mat-itu_metal">
+        <float name="eta_r" value="1.0"/>
+        <float name="eta_i" value="51357436"/>
+		<float name="s" value="1.0"/>
+		<integer name="alpha_r" value="5"/>
+		<integer name="alpha_i" value="1"/>
+		<float name="lambda" value="1.0"/>
+    </bsdf>
+
+    <bsdf type="lambertian" id="mat-low_reflection">
+        <float name="eta_r" value="1.0"/>
+        <float name="eta_i" value="0.01"/>
+		<float name="s" value="1.0"/>
+    </bsdf>
+
+<!-- Shapes -->
+
+	<shape type="ply" id="mesh-Screen_2">
+		<string name="filename" value="meshes/Screen_2.ply"/>
+		<boolean name="face_normals" value="true"/>
+		<ref id="mat-low_reflection" name="bsdf"/>
+	</shape>
+	<shape type="ply" id="mesh-Screen_1">
+		<string name="filename" value="meshes/Screen_1.ply"/>
+		<boolean name="face_normals" value="true"/>
+		<ref id="mat-low_reflection" name="bsdf"/>
+	</shape>
+	<shape type="ply" id="mesh-Ground">
+		<string name="filename" value="meshes/Ground.ply"/>
+		<boolean name="face_normals" value="true"/>
+		<ref id="mat-low_reflection" name="bsdf"/>
+	</shape>
+	<shape type="ply" id="mesh-Reflector">
+		<string name="filename" value="meshes/Reflector.ply"/>
+		<boolean name="face_normals" value="true"/>
+		<ref id="mat-itu_metal" name="bsdf"/>
+	</shape>
+</scene>

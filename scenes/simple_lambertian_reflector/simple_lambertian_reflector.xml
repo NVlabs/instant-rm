@@ -1,0 +1,21 @@
+<scene version="2.1.0">
+
+<!-- Defaults, these can be set via the command line: -Darg=value -->
+
+
+<!-- Materials -->
+
+    <bsdf type="lambertian" id="mat-itu_metal">
+        <float name="eta_r" value="1.0"/>
+        <float name="eta_i" value="51357436"/>
+		<float name="s" value="1.0"/>
+    </bsdf>
+
+<!-- Shapes -->
+
+	<shape type="ply" id="mesh-reflector">
+		<string name="filename" value="meshes/reflector.ply"/>
+		<boolean name="face_normals" value="true"/>
+		<ref id="mat-itu_metal" name="bsdf"/>
+	</shape>
+</scene>

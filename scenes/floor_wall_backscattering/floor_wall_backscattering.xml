@@ -1,0 +1,33 @@
+<scene version="2.1.0">
+
+<!-- Materials -->
+
+    <bsdf type="lambertian" id="mat-itu_concrete">
+        <float name="eta_r" value="5.24"/>
+        <float name="eta_i" value="0.63214296"/>
+        <float name="s" value="0.9"/>
+    </bsdf>
+    <bsdf type="backscattering" id="mat-itu_marble">
+        <float name="eta_r" value="7.074"/>
+        <float name="eta_i" value="0.090132594"/>
+        <float name="s" value="0.7"/>
+		<integer name="alpha_r" value="30"/>
+		<integer name="alpha_i" value="30"/>
+		<float name="lambda" value="0.5"/>
+    </bsdf>
+
+<!-- Shapes -->
+
+	<shape type="merge">
+		<shape type="ply" id="mesh-floor">
+			<string name="filename" value="meshes/floor.ply"/>
+			<boolean name="face_normals" value="true"/>
+			<ref id="mat-itu_concrete" name="bsdf"/>
+		</shape>
+		<shape type="ply" id="mesh-wall">
+			<string name="filename" value="meshes/wall.ply"/>
+			<boolean name="face_normals" value="true"/>
+			<ref id="mat-itu_marble" name="bsdf"/>
+		</shape>
+	</shape>
+</scene>

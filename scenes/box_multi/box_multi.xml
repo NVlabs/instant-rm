@@ -1,0 +1,57 @@
+<scene version="2.1.0">
+
+<!-- Defaults, these can be set via the command line: -Darg=value -->
+
+<!-- Materials -->
+
+    <bsdf type="smooth" id="mat-itu_concrete">
+        <float name="eta_r" value="5.24"/>
+        <float name="eta_i" value="0.63214296"/>
+    </bsdf>
+    <bsdf type="smooth" id="mat-itu_marble">
+        <float name="eta_r" value="7.074"/>
+        <float name="eta_i" value="0.090132594"/>
+    </bsdf>
+    <bsdf type="smooth" id="mat-itu_wood">
+        <float name="eta_r" value="1.99"/>
+        <float name="eta_i" value="0.09243433"/>
+    </bsdf>
+    <bsdf type="smooth" id="mat-itu_brick">
+        <float name="eta_r" value="3.91"/>
+        <float name="eta_i" value="0.14935891"/>
+    </bsdf>
+
+<!-- Shapes -->
+	<shape type="merge">
+        <shape type="ply" id="mesh-floor">
+            <string name="filename" value="meshes/floor.ply"/>
+            <boolean name="face_normals" value="true"/>
+            <ref id="mat-itu_concrete" name="bsdf"/>
+        </shape>
+        <shape type="ply" id="mesh-ceiling">
+            <string name="filename" value="meshes/ceiling.ply"/>
+            <boolean name="face_normals" value="true"/>
+            <ref id="mat-itu_wood" name="bsdf"/>
+        </shape>
+        <shape type="ply" id="mesh-wall_xp">
+            <string name="filename" value="meshes/wall_xp.ply"/>
+            <boolean name="face_normals" value="true"/>
+            <ref id="mat-itu_brick" name="bsdf"/>
+        </shape>
+        <shape type="ply" id="mesh-wall_ym">
+            <string name="filename" value="meshes/wall_ym.ply"/>
+            <boolean name="face_normals" value="true"/>
+            <ref id="mat-itu_marble" name="bsdf"/>
+        </shape>
+        <shape type="ply" id="mesh-wall_yp">
+            <string name="filename" value="meshes/wall_yp.ply"/>
+            <boolean name="face_normals" value="true"/>
+            <ref id="mat-itu_marble" name="bsdf"/>
+        </shape>
+        <shape type="ply" id="mesh-wall_xm">
+            <string name="filename" value="meshes/wall_xm.ply"/>
+            <boolean name="face_normals" value="true"/>
+            <ref id="mat-itu_brick" name="bsdf"/>
+        </shape>
+    </shape>
+</scene>
