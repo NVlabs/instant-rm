@@ -225,7 +225,7 @@ class PathlossMapRBPTracer:
 
         depth = UInt(0)
         dr.set_flag(dr.JitFlag.LoopRecord, loop_record)
-        loop = Loop("main", state=lambda : (depth, rt))
+        loop = Loop("main", state=lambda : (depth, rt, self.sampler))
         loop.set_max_iterations(self.max_depth+1)
         dr.set_flag(dr.JitFlag.LoopOptimize, False) # Helps with latency
         while loop(rt.active):
@@ -338,7 +338,8 @@ class PathlossMapRBPTracer:
 
         depth = UInt(0)
         dr.set_flag(dr.JitFlag.LoopRecord, loop_record)
-        loop = Loop("main", state=lambda : (depth, rt, comb_mat, e2e_mat))
+        loop = Loop("main", state=lambda : (depth, rt, comb_mat, e2e_mat,
+                                            self.sampler))
         loop.set_max_iterations(self.max_depth+1)
         dr.set_flag(dr.JitFlag.LoopOptimize, False) # Helps with latency
         while loop(rt.active):
@@ -440,7 +441,7 @@ class PathlossMapRBPTracer:
 
         depth = UInt(0)
         dr.set_flag(dr.JitFlag.LoopRecord, loop_record)
-        loop = Loop("main", state=lambda : (depth, rt, comb_mat))
+        loop = Loop("main", state=lambda : (depth, rt, comb_mat, self.sampler))
         loop.set_max_iterations(self.max_depth+1)
         dr.set_flag(dr.JitFlag.LoopOptimize, False) # Helps with latency
         while loop(rt.active):
@@ -748,8 +749,8 @@ class PathlossMapRBPTracer:
         m_world = Spectrum(m_world)
 
         # Updates the ray tube radii of curvature
-        rt.rho_1 = dr.select(specular, rt.rho_1+d, 0.0)
-        rt.rho_2 = dr.select(specular, rt.rho_2+d, 0.0)
+        rt.rho_1 = (rt.rho_1 + d) & specular
+        rt.rho_2 = (rt.rho_2 + d) & specular
         # Updates ray tube origin
         rt.origin = si_scene.p
         # Updates the angle

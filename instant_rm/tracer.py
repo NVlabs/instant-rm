@@ -201,7 +201,7 @@ class MapTracer:
         depth = UInt(0)
         dr.set_flag(dr.JitFlag.LoopRecord, loop_record)
         dr.set_flag(dr.JitFlag.LoopOptimize, False) # Helps with latency
-        loop = Loop("main", state=lambda : (depth, rt))
+        loop = Loop("main", state=lambda : (depth, rt, self.sampler))
         loop.set_max_iterations(self.max_depth+1)
         while loop(rt.active):
 
@@ -534,8 +534,8 @@ class MapTracer:
         m_world = Spectrum(m_world)
 
         # Updates the ray tube radii of curvature
-        rt.rho_1 += (d & specular)
-        rt.rho_2 += (d & specular)
+        rt.rho_1 = (rt.rho_1 + d) & specular
+        rt.rho_2 = (rt.rho_2 + d) & specular
         # Updates ray tube origin
         rt.origin = si_scene.p
         # Updates the angle
