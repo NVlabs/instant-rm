@@ -50,6 +50,10 @@ As this variant is not included in the version of Mitsuba available on [PyPI](ht
 need to [install it from the sources with this variant](https://mitsuba.readthedocs.io/en/latest/src/developer_guide/compiling.html).
 Selecting variants can be achieved by adding `"cuda_ad_mono_polarized"` to the listd named `"enabled"` in the `mitsuba.conf` file which is generated when running CMake.
 Note that compiling Mitsuba also installs Dr.Jit from the source.
+We recommend using Mitsuba 3.5.2. To clone this specific version, use the following command:
+```sh
+git clone --recursive  https://github.com/mitsuba-renderer/mitsuba3.git --branch v3.5.2
+```
 
 Once Mitsuba is compiled, you should run the [`setpath.sh` script](https://mitsuba.readthedocs.io/en/latest/src/developer_guide/compiling.html#running-mitsuba) located in the `build` directory to configure the environment variables required to use Mitsuba.
 If you are using [JuptyterLab](https://jupyter.org/), you will need to run this script *before* starting the JupyterLab server:
