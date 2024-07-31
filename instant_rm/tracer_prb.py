@@ -123,6 +123,8 @@ class PathlossMapRBPTracer:
         # Wavelength [m]
         self.wavelength = SPEED_OF_LIGHT/fc
         # Number of cells forming the map
+        if mp_cell_size == 0:
+            raise ValueError("mp_cell_size cannot be zero")
         self.mp_num_cells = np.ceil(mp_size/mp_cell_size).astype(int)
 
         # Build the measurement plane
@@ -130,16 +132,17 @@ class PathlossMapRBPTracer:
             {'type': 'rectangle',
             'to_world': mp_to_world(mp_center, mp_orientation, mp_size),
             })
-
+        
         # Select the antenna pattern of the transmitter
-        if tx_pattern == 'iso':
-            self.tx_pattern_call = iso_antenna_pattern
-        elif tx_pattern == 'dipole':
-            self.tx_pattern_call = dipole_pattern
-        elif tx_pattern == 'hw_dipole':
-            self.tx_pattern_call = hw_dipole_pattern
-        elif tx_pattern == 'tr38901':
-            self.tx_pattern_call = tr38901_antenna_pattern
+        antenna_patterns = {
+            'iso': iso_antenna_pattern,
+            'dipole': dipole_pattern,
+            'hw_dipole': hw_dipole_pattern,
+            'tr38901': tr38901_antenna_pattern
+        }
+        
+        if tx_pattern not in antenna_patterns:
+            raise ValueError(f"Invalid tx_pattern: {tx_pattern}. Valid options are: {', '.join(antenna_patterns.keys())}")
 
         # Sampler
         self.sampler = mi.load_dict({'type': 'independent'})
@@ -263,7 +266,8 @@ class PathlossMapRBPTracer:
             rt.f_world = m_world@rt.f_world
             # Due to numerical error, it could be that rt.f_world.x is slightly
             # negative
-            rt.f_world &= (rt.f_world.x >= 0)
+        	epsilon = 1e-10
+        	rt.f_world &= (rt.f_world.x >= -epsilon)
 
             # Russian roulette
             rr_inactive = depth < self.rr_depth
@@ -386,7 +390,9 @@ class PathlossMapRBPTracer:
             rt.f_world = m_world@rt.f_world
             # Due to numerical error, it could be that rt.f_world.x is slightly
             # negative
-            rt.f_world &= (rt.f_world.x >= 0)
+            epsilon = 1e-10
+            rt.f_world &= (rt.f_world.x >= -epsilon)
+
 
             # Russian roulette
             rr_inactive = depth < self.rr_depth
@@ -505,13 +511,17 @@ class PathlossMapRBPTracer:
                 # only.
                 # Gradients are internally stored by Dr.JiT
                 f_total_world = comb_mat@m_world@rt.f_world
+                if not dr.any(dr.isfinite(f_total_world.x)):
+		            raise RuntimeError("Gradient computation resulted in non-finite values.")
                 dr.backward_from(f_total_world.x)
 
             # Update the field being propagated
             rt.f_world = m_world@rt.f_world
             # Due to numerical error, it could be that rt.f_world.x is slightly
             # negative
-            rt.f_world &= (rt.f_world.x >= 0)
+            epsilon = 1e-10
+	        rt.f_world &= (rt.f_world.x >= -epsilon)
+
 
             # Russian roulette
             rr_inactive = depth < self.rr_depth
