@@ -109,7 +109,8 @@ def hw_dipole_pattern(theta, phi, slant_angle):
     n = dr.shape(theta)[0]
 
     k = dr.sqrt(1.643)
-    c = k*dr.cos(PI/2.*dr.cos(theta))/dr.sin(theta)
+    EPSILON = 1e-9
+    c = k*dr.cos(PI/2.*dr.cos(theta))/dr.sin(theta+EPSILON)
 
     f = dr.zeros(Vector2f, n)
     f.x = c*dr.sin(slant_angle) # Horizontal component
