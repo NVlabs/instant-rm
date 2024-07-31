@@ -66,10 +66,11 @@ def complex_sqrt(x):
 
     x_i_sqr = dr.sqr(x_i)
 
-    r = dr.safe_sqrt(dr.sqr(x_r) + x_i_sqr)
-    r_sqrt = dr.safe_sqrt(r)
+    epsilon = 1e-10
+    r = dr.safe_sqrt(dr.sqr(x_r) + x_i_sqr+epsilon)
+    r_sqrt = dr.safe_sqrt(r+epsilon)
 
-    f = dr.rcp(dr.safe_sqrt(dr.sqr(x_r + r) + x_i_sqr))*r_sqrt
+    f = dr.rcp(dr.safe_sqrt(dr.sqr(x_r + r) + x_i_sqr+epsilon))*r_sqrt
     x_sqrt = mi.Complex2f(f*(x_r + r), x_i*f)
 
     return x_sqrt
@@ -114,6 +115,8 @@ def theta_phi_from_unit_vec(v):
         Azimuth angles
     """
 
+    if dr.shape(v)[1] != 3:
+		raise ValueError("Input vectors must be 3-dimensional.")
     # Clip to ensure numerical stability
     theta = dr.acos(v.z)
     phi = dr.atan2(v.y, v.x)

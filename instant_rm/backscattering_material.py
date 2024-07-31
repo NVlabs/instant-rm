@@ -134,10 +134,11 @@ class BackscatteringMaterial(mi.BSDF):
         # enable gradient for this parameter
         # Diffuse
         p = dr.sqr(self.s)
-        w_diffuse *= p*dr.detach(dr.rcp(p))
+        EPSILON = 1e-8 # Update value to ensure inverse is on non-zero values
+        w_diffuse *= p*dr.detach(dr.rcp(p + EPSILON))
         # Specular
         r = 1. - p
-        w_specular = r*dr.detach(dr.rcp(r))
+        w_specular = r*dr.detach(dr.rcp(r+EPSILON))
 
         # Sample reflection type
         specular = self.reflection_type(sample1)
@@ -307,7 +308,8 @@ class BackscatteringMaterial(mi.BSDF):
 
         # Normalization
         f = self.diffuse_normalization_factor(wi_local)
-        w_normalized = w*dr.rcp(f)
+        EPSILON = 1e-8
+        w_normalized = w*dr.rcp(f+EPSILON)
 
         return w_normalized
 

@@ -111,10 +111,11 @@ class LambertianMaterial(mi.BSDF):
         # enable gradient for this parameter
         # Diffuse
         p = dr.sqr(self.s)
-        w_diffuse *= p*dr.detach(dr.rcp(p))
+        EPSILON = 1e-9
+        w_diffuse *= p*dr.detach(dr.rcp(p+EPSILON))
         # Specular
         r = 1. - p
-        w_specular = r*dr.detach(dr.rcp(r))
+        w_specular = r*dr.detach(dr.rcp(r+EPSILON))
 
         # Sample reflection type
         specular = self.reflection_type(sample1)

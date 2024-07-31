@@ -155,16 +155,19 @@ class MapTracer:
              'to_world': mp_to_world(mp_center, mp_orientation, mp_size)
             })
 
+        # Define a dictionary to map tx_pattern strings to functions
+        pattern_mapping = {
+            'iso': iso_antenna_pattern,
+            'dipole': dipole_pattern,
+            'hw_dipole': hw_dipole_pattern,
+            'tr38901': tr38901_antenna_pattern
+        }
         # Select the antenna pattern of the transmitter
-        if tx_pattern == 'iso':
-            self.tx_pattern_call = iso_antenna_pattern
-        elif tx_pattern == 'dipole':
-            self.tx_pattern_call = dipole_pattern
-        elif tx_pattern == 'hw_dipole':
-            self.tx_pattern_call = hw_dipole_pattern
-        elif tx_pattern == 'tr38901':
-            self.tx_pattern_call = tr38901_antenna_pattern
-
+        if tx_pattern in pattern_mapping:
+            self.tx_pattern_call = pattern_mapping[tx_pattern]
+        else:
+            raise ValueError(f"Invalid tx_pattern: {tx_pattern}. Valid options are: {', '.join(pattern_mapping.keys())}")
+    
         # Sampler
         self.sampler = mi.load_dict({'type': 'independent'})
 
