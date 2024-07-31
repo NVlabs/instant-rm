@@ -102,7 +102,7 @@ class RayTube:
         self.ray = mi.Ray3f(o=tx_position, d=k_world)
 
         # Mask indicating which rays are active
-        self.active = dr.full(dr.mask_t(mi.Float), True, num_samples)
+        self.active = dr.full(dr.Bool(mi.Float), True, num_samples) # 
 
         # Initialize field vector
         # Field vector radiated by the transmit antenna in the world frame and
@@ -152,8 +152,8 @@ class RayTube:
         """
 
         spherical = dr.eq(self.rho_1, 0.) & dr.eq(self.rho_2, 0.)
-
-        a2_1 = dr.sqr(dr.rcp(s))
-        a2_2 = self.rho_1*self.rho_2*dr.rcp((self.rho_1+s)*(self.rho_2+s))
+        EPSILON = 1e-9
+        a2_1 = dr.sqr(dr.rcp(s+EPSILON))
+        a2_2 = self.rho_1*self.rho_2*dr.rcp((self.rho_1+s)*(self.rho_2+s) + EPSILON)
         a2 = dr.select(spherical, a2_1, a2_2)
         return a2
